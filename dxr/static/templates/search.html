@@ -34,7 +34,7 @@
               {%- set data_path = '%s/%s' % (data_path, display_path) if data_path else display_path -%}
               {%- set is_first_or_only = loop.first or paths|length == 1 -%}
               {%- set is_dir = not loop.last -%}
-              {%- set url = '%s/%s/source/%s' % (wwwroot, tree, path) -%}
+              {%- set url = '%s/%s/source/%s' % (wwwroot, tree, data_path) -%}
 
               {%- include 'path_line.html' -%}
             {%- endfor -%}
