@@ -67,7 +67,7 @@ $(function() {
 
     // Listen for clicks bubbling up from children of the content container,
     // but only act if the element was an anchor with a data-path attribute.
-    contentContainer.on('click', 'a[data-path]', function(event) {
+    contentContainer.on('contextmenu', 'a[data-path]', function(event) {
         event.preventDefault();
 
         var contextMenu = {},
