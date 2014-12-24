@@ -1,5 +1,14 @@
-<ul id="context-menu" class="context-menu" tabindex="0">
-    {% for item in menuItems %}
-        <li><a href="{{ item.href }}" class="{{ item.icon }} icon">{{ item.html|default(item.text)|safe }}</a></li>
-    {% endfor %}
-</ul>
+{% if htmlMenuSupport %}
+    <menu type="context" id="context-menu">
+        {% for item in menuItems %}
+            <menuitem label="{{ item.html|default(item.text)|safe }}" icon="{{ item.icon }}" onclick="window.location='{{ item.href }}'"></menuitem>
+        {% endfor %}
+    </menu>
+{% else %}
+    <ul id="context-menu" class="context-menu" tabindex="0">
+        {% for item in menuItems %}
+            <li><a href="{{ item.href }}" class="{{ item.icon }} icon">{{ item.html|default(item.text)|safe }}</a></li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
