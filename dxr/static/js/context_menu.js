@@ -38,37 +38,53 @@ $(function() {
         var top = event.clientY,
             left = event.clientX;
 
-        // If we arrived at the page via a search result and there is a hash in the url,
-        // or the document has been scrolled, incorporate the scrollY amount for the
-        // top location of the context menu.
-        if (window.location.href.indexOf('#') > -1 || window.scrollY > 0) {
-            top += window.scrollY;
+        // If the user's browser supports the html5 context menu, pass a boolean
+        // indicating this in the contextMenu information.  This will cause
+        // the template to render an html5 context menu, which will then be
+        // assigned to the target using jQuery.
+        // Otherwise, fallback to the JS context menu.
+        if ('contextMenu' in document.body && 'HTMLMenuItemElement' in window) {
+
+            contextMenu.htmlMenuSupport = true;
+            target.append(nunjucks.render('context_menu.html', contextMenu));
+            var currentContextMenu = $('#context-menu');
+            target.attr("contextmenu", "context-menu");
+
+        } else {
+
+            event.preventDefault();
+            contextMenu.htmlMenuSupport = false;
+            // If we arrived at the page via a search result and there is a hash in the url,
+            // or the document has been scrolled, incorporate the scrollY amount for the
+            // top location of the context menu.
+            if (window.location.href.indexOf('#') > -1 || window.scrollY > 0) {
+                top += window.scrollY;
+            }
+
+            target.append(nunjucks.render('context_menu.html', contextMenu));
+            var currentContextMenu = $('#context-menu');
+
+            // Immediately after appending the context menu, position it.
+            currentContextMenu.css({
+                top: top,
+                left: left
+            });
+
+            // Move focus to the context menu
+            currentContextMenu[0].focus();
+
+            currentContextMenu.on('mousedown', function(event) {
+                // Prevent clicks on the menu to propagate
+                // to the window, so that the menu is not
+                // removed and links will be followed.
+                event.stopPropagation();
+            });
         }
-
-        target.append(nunjucks.render('context_menu.html', contextMenu));
-        var currentContextMenu = $('#context-menu');
-
-        // Immediately after appending the context menu, position it.
-        currentContextMenu.css({
-            top: top,
-            left: left
-        });
-
-        // Move focus to the context menu
-        currentContextMenu[0].focus();
-
-        currentContextMenu.on('mousedown', function(event) {
-            // Prevent clicks on the menu to propagate
-            // to the window, so that the menu is not
-            // removed and links will be followed.
-            event.stopPropagation();
-        });
     }
 
     // Listen for clicks bubbling up from children of the content container,
     // but only act if the element was an anchor with a data-path attribute.
     contentContainer.on('contextmenu', 'a[data-path]', function(event) {
-        event.preventDefault();
 
         var contextMenu = {},
             path = $(this).data('path'),
