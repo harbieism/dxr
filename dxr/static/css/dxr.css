@@ -117,6 +117,9 @@ table tbody tr:hover,
 .context-menu a:hover {
     background-color: #e8e8e8;
 }
+[data-path] {
+    cursor: context-menu;
+}
 table.folder-content td {
     padding: 0;
 }
@@ -208,7 +211,6 @@ mark {
     padding: .1rem .5rem;
 }
 .results a {
-    cursor: pointer;
     display: inline-block;
 }
 .file a:target {
