@@ -196,6 +196,16 @@ def browse(tree, path=''):
         if not files_and_folders:
             raise NotFound
 
+        # Create path data for each of the breadcrumbs in the html to be
+        # rendered.
+        data_paths = path.split('/')
+        appended_paths = []
+        for paths in data_paths:
+            if not appended_paths:
+                appended_paths.append(paths)
+            else:
+                appended_paths.append(appended_paths[-1] + "/" + paths)
+
         return render_template(
             'folder.html',
             # Common template variables:
@@ -216,6 +226,7 @@ def browse(tree, path=''):
             # Folder template variables:
             name=basename(path) or tree,
             path=path,
+            data_path=appended_paths,
             files_and_folders=[
                 ('folder' if f['is_folder'] else icon(f['name']),
                  f['name'],
