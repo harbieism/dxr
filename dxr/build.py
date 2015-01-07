@@ -502,6 +502,9 @@ def index_file(tree, tree_indexers, path, es, index, jinja_env):
     # Render some HTML:
     # TODO: Make this no longer conditional on is_text, and come up with a nice
     # way to show binary files, especially images.
+
+    # Create path data for each of the valid breadcrumbs in the html to be
+    # rendered.
     data_paths = rel_path.replace("/" + tree.name + "/source/", "").split('/')
     appended_paths = []
     for path in data_paths:
@@ -509,6 +512,7 @@ def index_file(tree, tree_indexers, path, es, index, jinja_env):
             appended_paths.append(path)
         else:
             appended_paths.append(appended_paths[-1] + "/" + path)
+
     if is_text and 'html' not in tree.config.skip_stages:
         _fill_and_write_template(
             jinja_env,

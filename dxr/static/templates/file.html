@@ -18,7 +18,7 @@
   <div class="breadcrumbs">
     {%- for path, name in paths_and_names -%}
       {%- if not loop.first and not loop.last -%}
-        <span class="path-separator">/</span><a href="{{ wwwroot }}{{ path }}"data-path="{{ data_path[loop.index0 - 1] }}">{{ name }}</a>
+        <span class="path-separator">/</span><a href="{{ wwwroot }}{{ path }}" data-path="{{ data_path[loop.index0 - 1] }}">{{ name }}</a>
       {%- elif loop.last -%}
         <span class="path-separator">/</span><a href="{{ wwwroot }}{{ path }}">{{ name }}</a>
       {%- else -%}
