@@ -502,6 +502,13 @@ def index_file(tree, tree_indexers, path, es, index, jinja_env):
     # Render some HTML:
     # TODO: Make this no longer conditional on is_text, and come up with a nice
     # way to show binary files, especially images.
+    data_paths = rel_path.replace("/" + tree.name + "/source/","").split('/')
+    appended_paths = []
+    for path in data_paths:
+        if not appended_paths:
+            appended_paths.append(path)
+        else:
+            appended_paths.append(appended_paths[-1] + "/" + path)
     if is_text and 'html' not in tree.config.skip_stages:
         _fill_and_write_template(
             jinja_env,
@@ -523,7 +530,7 @@ def index_file(tree, tree_indexers, path, es, index, jinja_env):
              'icon': icon(rel_path),
              'path': rel_path,
              'name': os.path.basename(rel_path),
-
+             'data_path': appended_paths,
              # Someday, it would be great to stream this and not concretize the
              # whole thing in RAM. The template will have to quit looping
              # through the whole thing 3 times.
